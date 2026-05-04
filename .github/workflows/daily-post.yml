@@ -2,8 +2,7 @@ name: Daily Cute Animal Post
 
 on:
   schedule:
-    # 10 AM Singapore time = 2 AM UTC
-    - cron: '0 2 * * *'
+    - cron: '0 2 * * *'   # 10 AM Singapore = 2 AM UTC
   workflow_dispatch:
 
 jobs:
@@ -28,8 +27,9 @@ jobs:
         env:
           IG_USER: ${{ secrets.IG_USER }}
           IG_PASS: ${{ secrets.IG_PASS }}
+          IG_PROXY: ${{ secrets.IG_PROXY }}   # new proxy secret
           UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
-        run: python -u post_animals.py   # -u forces unbuffered output
+        run: python -u post_animals.py
 
       - name: Upload logs
         uses: actions/upload-artifact@v4
