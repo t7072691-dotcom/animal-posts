@@ -9,7 +9,7 @@ import sys
 print(sys.executable)
 
 # --- CONFIG ---
-UNSPLASH_KEY = os.getenv("UNSPLASH_KEY")
+UNSPLASH_KEY = os.getenv("UNSPLASH_ACCESS_KEY")
 INSTAGRAM_USER = os.getenv("IG_USER")
 INSTAGRAM_PASS = os.getenv("IG_PASS")
 #TIKTOK_TOKEN = os.getenv("TIKTOK_TOKEN")  # optional placeholder
