@@ -5,7 +5,7 @@ on:
   schedule:
     # 10 AM Singapore time = 2 AM UTC
     - cron: '0 2 * * *'
-  workflow_dispatch:  # allows manual trigger
+  workflow_dispatch: # allows manual trigger
 
 jobs:
   run-script:
@@ -13,10 +13,10 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4   # updated
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
@@ -27,10 +27,10 @@ jobs:
 
       - name: Run daily post script
         env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           IG_USER: ${{ secrets.IG_USER }}
           IG_PASS: ${{ secrets.IG_PASS }}
           UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
           UNSPLASH_SECRET_KEY: ${{ secrets.UNSPLASH_SECRET_KEY }}
-          #TIKTOK_TOKEN: ${{ secrets.TIKTOK_TOKEN }}
+          # Uncomment if you add TikTok support
+          # TIKTOK_TOKEN: ${{ secrets.TIKTOK_TOKEN }}
         run: python post_animals.py
