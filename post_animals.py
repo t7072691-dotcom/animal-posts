@@ -6,14 +6,19 @@ from instagrapi import Client
 from dotenv import load_dotenv
 import traceback
 
+# Load environment variables
 load_dotenv()
-print("[DEBUG] Python executable:", sys.executable)
+
+print("[DEBUG] Script started", flush=True)
+print("[DEBUG] Python executable:", sys.executable, flush=True)
 
 # --- CONFIG ---
 UNSPLASH_KEY = os.getenv("UNSPLASH_ACCESS_KEY")  # Access Key only
 INSTAGRAM_USER = os.getenv("IG_USER")
 INSTAGRAM_PASS = os.getenv("IG_PASS")
 # TIKTOK_TOKEN = os.getenv("TIKTOK_TOKEN")  # optional placeholder
+
+print("[DEBUG] UNSPLASH_KEY present:", bool(UNSPLASH_KEY), flush=True)
 
 # --- FUNCTIONS ---
 def fetch_cute_animal_image():
@@ -24,7 +29,7 @@ def fetch_cute_animal_image():
     try:
         resp.raise_for_status()
     except requests.exceptions.HTTPError as e:
-        print("[ERROR] Unsplash API error:", resp.text)
+        print("[ERROR] Unsplash API error:", resp.text, flush=True)
         raise e
     data = resp.json()
     img_url = data["urls"]["regular"]
@@ -32,7 +37,7 @@ def fetch_cute_animal_image():
     filename = f"animal_{datetime.now().strftime('%Y%m%d')}.jpg"
     with open(filename, "wb") as f:
         f.write(img_data)
-    print("[DEBUG] Image downloaded:", filename, img_url)
+    print("[DEBUG] Image downloaded:", filename, img_url, flush=True)
     return filename, img_url
 
 def post_instagram(image_path, caption="Daily dose of cuteness 🐾"):
@@ -41,14 +46,14 @@ def post_instagram(image_path, caption="Daily dose of cuteness 🐾"):
     try:
         cl.login(INSTAGRAM_USER, INSTAGRAM_PASS)
         cl.photo_upload(image_path, caption)
-        print("[DEBUG] Instagram upload succeeded")
+        print("[DEBUG] Instagram upload succeeded", flush=True)
     except Exception as e:
-        print("[ERROR] Instagram upload failed:", e)
+        print("[ERROR] Instagram upload failed:", e, flush=True)
         traceback.print_exc()
 
 def post_tiktok(image_path, caption="Daily dose of cuteness 🐾"):
     """Placeholder for TikTok posting."""
-    print(f"[DEBUG] Would post {image_path} to TikTok with caption: {caption}")
+    print(f"[DEBUG] Would post {image_path} to TikTok with caption: {caption}", flush=True)
 
 def log_activity(image_url):
     """Save a log file with the image URL and timestamp."""
@@ -57,7 +62,7 @@ def log_activity(image_url):
     log_file = os.path.join(log_dir, f"{datetime.now().strftime('%Y%m%d')}.txt")
     with open(log_file, "w") as f:
         f.write(f"Posted at {datetime.now()}\nImage URL: {image_url}\n")
-    print("[DEBUG] Log written to", log_file)
+    print("[DEBUG] Log written to", log_file, flush=True)
 
 def job():
     try:
@@ -65,9 +70,9 @@ def job():
         post_instagram(img)
         post_tiktok(img)
         log_activity(url)
-        print("Posted successfully at", datetime.now())
+        print("Posted successfully at", datetime.now(), flush=True)
     except Exception as e:
-        print("[ERROR] Job failed:", e)
+        print("[ERROR] Job failed:", e, flush=True)
         traceback.print_exc()
 
 if __name__ == "__main__":
