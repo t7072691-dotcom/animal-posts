@@ -16,6 +16,7 @@ print("[DEBUG] Python executable:", sys.executable, flush=True)
 UNSPLASH_KEY = os.getenv("UNSPLASH_ACCESS_KEY")  # Access Key only
 INSTAGRAM_USER = os.getenv("IG_USER")
 INSTAGRAM_PASS = os.getenv("IG_PASS")
+INSTAGRAM_PROXY = os.getenv("IG_PROXY")  # new: optional proxy
 # TIKTOK_TOKEN = os.getenv("TIKTOK_TOKEN")  # optional placeholder
 
 print("[DEBUG] UNSPLASH_KEY present:", bool(UNSPLASH_KEY), flush=True)
@@ -41,8 +42,11 @@ def fetch_cute_animal_image():
     return filename, img_url
 
 def post_instagram(image_path, caption="Daily dose of cuteness 🐾"):
-    """Login with secrets and post to Instagram."""
+    """Login with secrets and post to Instagram, using proxy if provided."""
     cl = Client()
+    if INSTAGRAM_PROXY:
+        cl.set_proxy(INSTAGRAM_PROXY)
+        print("[DEBUG] Proxy set for Instagram:", INSTAGRAM_PROXY, flush=True)
     try:
         cl.login(INSTAGRAM_USER, INSTAGRAM_PASS)
         cl.photo_upload(image_path, caption)
