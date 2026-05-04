@@ -1,11 +1,10 @@
-# .github/workflows/daily-post.yml
 name: Daily Cute Animal Post
 
 on:
   schedule:
     # 10 AM Singapore time = 2 AM UTC
     - cron: '0 2 * * *'
-  workflow_dispatch: # allows manual trigger
+  workflow_dispatch:
 
 jobs:
   run-script:
@@ -30,12 +29,16 @@ jobs:
           IG_USER: ${{ secrets.IG_USER }}
           IG_PASS: ${{ secrets.IG_PASS }}
           UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
-          # Uncomment if you add TikTok support
-          # TIKTOK_TOKEN: ${{ secrets.TIKTOK_TOKEN }}
-        run: python post_animals.py
+        run: python -u post_animals.py   # -u forces unbuffered output
 
       - name: Upload logs
         uses: actions/upload-artifact@v4
         with:
           name: animal-post-logs
           path: logs/
+
+      - name: Upload image
+        uses: actions/upload-artifact@v4
+        with:
+          name: animal-post-image
+          path: "*.jpg"
